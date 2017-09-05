@@ -21,7 +21,7 @@ class wordCount {
   static cleanFormatText() {
     const text = $('.text-field').val()
     const words = text.replace(/(\r\n|\n|\r)/gm," ").replace(/('re)/g, " are").replace(/('m)/g, " am").replace(/('t)/g, " not").replace(/('ll)/g, " will").replace(/('em)/g, " them").replace(/[&\/\\#,+()$~%.'":*-?<>{}]/g, '').split(" ")
-    return words.map((word) => {return word.toLowerCase()})
+    return words.map(function(word) {return word.toLowerCase()})
   }
 
   static buildTextFrequency() {
