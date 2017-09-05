@@ -18,19 +18,26 @@ class wordCount {
     $('.top-heading').append(`${topWord} (${times})`)
   }
 
-  static getText() {
-    const text = $('.text-field').val()
-    const cleanedText = text.replace(/(\r\n|\n|\r)/gm," ").replace(/('re)/g, " are").replace(/('m)/g, " am").replace(/('t)/g, " not").replace(/('ll)/g, " will").replace(/('em)/g, " them").replace(/[&\/\\#,+()$~%.'":*-?<>{}]/g, '');
-    const words = cleanedText.split(" ")
-    const downcaseWords = words.map((word) => {return word.toLowerCase()})
+  static cleanFormatText(text) {
+    const words = text.replace(/(\r\n|\n|\r)/gm," ").replace(/('re)/g, " are").replace(/('m)/g, " am").replace(/('t)/g, " not").replace(/('ll)/g, " will").replace(/('em)/g, " them").replace(/[&\/\\#,+()$~%.'":*-?<>{}]/g, '').split(" ")
+    return words.map((word) => {return word.toLowerCase()})
+  }
 
-    const result = downcaseWords.reduce(function(counterObject, word) {
+  static buildTextFrequency() {
+    const text = $('.text-field').val()
+    const downcaseWords = wordCount.cleanFormatText(text)
+
+    return downcaseWords.reduce(function(counterObject, word) {
       if(!counterObject[word]) {
         counterObject[word] = 0
       }
       counterObject[word] += 1
       return counterObject
     }, {})
+  }
+
+  static getText() {
+    const result = wordCount.buildTextFrequency()
 
     //appending to word-count
     const resultKeys = Object.keys(result)
