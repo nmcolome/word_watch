@@ -36,22 +36,38 @@ class wordCount {
     }, {})
   }
 
-  static getText() {
-    const result = wordCount.buildTextFrequency()
+  static postWordApi(word) {
+    let data = { word: { value: word } }
+    $.post(`${host}/words`, data)
+    .then(function(response) {
+      console.log(response)
+    })
+  }
 
-    //appending to word-count
+  static appendPostWords(result) {
     const resultKeys = Object.keys(result)
     for (let i = 0; i < resultKeys.length; i++) {
       const word = resultKeys[i]
       const frequency = result[resultKeys[i]]
-      $('article.word-count').append(`<span class='${word}-count'>${word}</span>`)
-      $(`.${word}-count`).css('margin', '2px').css('font-size', `${frequency}em`)
-      for (let j = 0; j < frequency; j++) {
-      let data = { word: { value: word } }
-        $.post(`${host}/words`, data)
-        .then((respones) => {console.log(respones)})
-      }
+      wordCount.appendWord(word, frequency)
+      wordCount.postWords(word, frequency)
     }
+  }
+
+  static appendWord(word, frequency) {
+    $('article.word-count').append(`<span class='${word}-count'>${word}</span>`)
+    $(`.${word}-count`).css('margin', '2px').css('font-size', `${frequency}em`)
+  }
+
+  static postWords(word, frequency) {
+    for (let j = 0; j < frequency; j++) {
+      wordCount.postWordApi(word)
+    }
+  }
+
+  static getText() {
+    const result = wordCount.buildTextFrequency()
+    wordCount.appendPostWords(result)
   }
 }
 
