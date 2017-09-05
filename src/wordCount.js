@@ -18,14 +18,14 @@ class wordCount {
     $('.top-heading').append(`${topWord} (${times})`)
   }
 
-  static cleanFormatText(text) {
+  static cleanFormatText() {
+    const text = $('.text-field').val()
     const words = text.replace(/(\r\n|\n|\r)/gm," ").replace(/('re)/g, " are").replace(/('m)/g, " am").replace(/('t)/g, " not").replace(/('ll)/g, " will").replace(/('em)/g, " them").replace(/[&\/\\#,+()$~%.'":*-?<>{}]/g, '').split(" ")
     return words.map((word) => {return word.toLowerCase()})
   }
 
   static buildTextFrequency() {
-    const text = $('.text-field').val()
-    const downcaseWords = wordCount.cleanFormatText(text)
+    const downcaseWords = wordCount.cleanFormatText()
 
     return downcaseWords.reduce(function(counterObject, word) {
       if(!counterObject[word]) {
@@ -39,9 +39,6 @@ class wordCount {
   static postWordApi(word) {
     let data = { word: { value: word } }
     $.post(`${host}/words`, data)
-    .then(function(response) {
-      console.log(response)
-    })
   }
 
   static appendPostWords(result) {
@@ -49,12 +46,12 @@ class wordCount {
     for (let i = 0; i < resultKeys.length; i++) {
       const word = resultKeys[i]
       const frequency = result[resultKeys[i]]
-      wordCount.appendWord(word, frequency)
+      wordCount.appendStyleWord(word, frequency)
       wordCount.postWords(word, frequency)
     }
   }
 
-  static appendWord(word, frequency) {
+  static appendStyleWord(word, frequency) {
     $('article.word-count').append(`<span class='${word}-count'>${word}</span>`)
     $(`.${word}-count`).css('margin', '2px').css('font-size', `${frequency}em`)
   }
