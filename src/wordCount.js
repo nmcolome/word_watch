@@ -32,6 +32,7 @@ class wordCount {
       $('article.word-count').append(`<span class='${resultKeys[i]}-count'>${resultKeys[i]}</span>`)
       $(`.${resultKeys[i]}-count`).css('margin', '2px').css('font-size', `${result[resultKeys[i]]}em`)
     }
+    // $.post(`${host}/words`, { word: { `${result[resultKeys[i]]}`: `${resultKeys[i]}` } })
   }
 }
 
