@@ -3,13 +3,19 @@ const host = require('./config.js').host
 
 class wordCount {
   static getTopWord() {
-    $.getJSON(`${host}/top_word`)
-    .then(function(data) {
-      const topWord = Object.keys(data['word'])[0]
-      const times = data['word'][topWord]
+    wordCount.getTopWordApi()
+    .then(wordCount.appendTopWord)
+  }
 
-      $('.top-heading').append(`${topWord} (${times})`)
-    })
+  static getTopWordApi() {
+    return $.getJSON(`${host}/top_word`)
+  }
+
+  static appendTopWord(data) {
+    const topWord = Object.keys(data['word'])[0]
+    const times = data['word'][topWord]
+
+    $('.top-heading').append(`${topWord} (${times})`)
   }
 
   static getText() {
