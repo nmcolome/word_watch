@@ -29,10 +29,16 @@ class wordCount {
     //appending to word-count
     const resultKeys = Object.keys(result)
     for (let i = 0; i < resultKeys.length; i++) {
-      $('article.word-count').append(`<span class='${resultKeys[i]}-count'>${resultKeys[i]}</span>`)
-      $(`.${resultKeys[i]}-count`).css('margin', '2px').css('font-size', `${result[resultKeys[i]]}em`)
+      const word = resultKeys[i]
+      const frequency = result[resultKeys[i]]
+      $('article.word-count').append(`<span class='${word}-count'>${word}</span>`)
+      $(`.${word}-count`).css('margin', '2px').css('font-size', `${frequency}em`)
+      for (let j = 0; j < frequency; j++) {
+      let data = { word: { value: word } }
+        $.post(`${host}/words`, data)
+        .then((respones) => {console.log(respones)})
+      }
     }
-    // $.post(`${host}/words`, { word: { `${result[resultKeys[i]]}`: `${resultKeys[i]}` } })
   }
 }
 
