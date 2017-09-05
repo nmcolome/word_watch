@@ -11,6 +11,14 @@ class wordCount {
       $('.top-heading').append(`${topWord} (${times})`)
     })
   }
+
+  static getText() {
+    const text = $('.text-field').val()
+    const cleanedText = text.replace(/(\r\n|\n|\r)/gm," ").replace(/('re)/g, " are").replace(/('m)/g, " am").replace(/('t)/g, " not").replace(/('ll)/g, " will").replace(/('em)/g, " them").replace(/[&\/\\#,+()$~%.'":*-?<>{}]/g, '');
+    const words = cleanedText.split(" ")
+    const downcaseWords = words.map((word) => return word.toLowerCase())
+    debugger
+  }
 }
 
 module.exports = wordCount;
